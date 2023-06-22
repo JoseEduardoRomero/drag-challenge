@@ -1,0 +1,1 @@
+export {defualt as Button} from './Main'

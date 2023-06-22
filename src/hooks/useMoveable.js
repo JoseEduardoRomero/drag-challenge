@@ -62,10 +62,10 @@ const useMoveable =() =>{
     };
 
     const handleResizeStart = (index, e) => {
-        const [handlePosX, handlePosY] = e.direction;
-
+        const [handlePosX] = e.direction;
+    //handlePosY
         if (handlePosX === -1) {
-            const initialLeft = e.left;
+            // const initialLeft = e.left;
             const initialWidth = e.width;
 
             // Set up the onResize event handler to update the left value based on the change in width
@@ -96,19 +96,18 @@ const useMoveable =() =>{
         setMoveableComponents(updatedMoveables);
     };
 
-    const onGetImages =   () =>{
-         imageRequest.getData("photos").then((response) => {
-            setAllImages(response)
-        });
-    }
-
     const handleSelected = useCallback((id) => {
         setSelected(id)
     },[])
 
     useEffect(()=>{
+        const onGetImages =  () =>{
+            imageRequest.getData("photos").then((response) => {
+                setAllImages(response)
+            });
+        }
         onGetImages()
-    },[])
+    },[imageRequest])
 
     return{
         moveableComponents,

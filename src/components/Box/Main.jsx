@@ -32,7 +32,7 @@ const Box = (props) => {
         id,
         setSelected,
         isSelected = false,
-        updateEnd,
+        // updateEnd,
         deleteMoveable,
     } = props;
     const ref = useRef();

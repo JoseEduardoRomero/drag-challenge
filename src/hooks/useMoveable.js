@@ -96,9 +96,10 @@ const useMoveable =() =>{
         setMoveableComponents(updatedMoveables);
     };
 
-    const onGetImages =  async () =>{
-        const images = await imageRequest.getData("photos");
-        setAllImages(images);
+    const onGetImages =   () =>{
+         imageRequest.getData("photos").then((response) => {
+            setAllImages(response)
+        });
     }
 
     const handleSelected = useCallback((id) => {

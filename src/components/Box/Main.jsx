@@ -1,5 +1,7 @@
-import React, {useRef, useState} from "react";
+import React from "react";
 import Moveable from "react-moveable";
+import useBox from "../../hooks/useBox";
+import {Button} from "../ui";
 
 
 /**
@@ -26,101 +28,15 @@ const Box = (props) => {
         left,
         width,
         height,
-        index,
         color,
         image,
         id,
         setSelected,
         isSelected = false,
-        // updateEnd,
         deleteMoveable,
     } = props;
-    const ref = useRef();
 
-    const [nodoReferencia, setNodoReferencia] = useState({
-        top,
-        left,
-        width,
-        height,
-        index,
-        color,
-        id,
-    });
-
-    let parent = document.getElementById("parent");
-    let parentBounds = parent?.getBoundingClientRect();
-
-    const onResize = (e) => {
-        // Update width and height
-        let newWidth = e.width;
-        let newHeight = e.height;
-
-        // Ensure the component stays within the parent boundaries
-        if (left + newWidth > parentBounds?.width) {
-            newWidth = parentBounds?.width - left;
-        }
-
-        if (top + newHeight > parentBounds?.height) {
-            newHeight = parentBounds?.height - top;
-        }
-
-        updateMoveable(id, {
-            top,
-            left,
-            width: newWidth,
-            height: newHeight,
-            color,
-        });
-
-        // Update reference node
-        const beforeTranslate = e.drag.beforeTranslate;
-
-        ref.current.style.width = `${e.width}px`;
-        ref.current.style.height = `${e.height}px`;
-
-        let translateX = beforeTranslate[0];
-        let translateY = beforeTranslate[1];
-
-        ref.current.style.transform = `translate(${translateX}px, ${translateY}px)`;
-
-        setNodoReferencia({
-            ...nodoReferencia,
-            translateX,
-            translateY,
-            top: top + translateY < 0 ? 0 : top + translateY,
-            left: left + translateX < 0 ? 0 : left + translateX,
-        });
-    };
-
-    const onResizeEnd = (e) => {
-        let newWidth = e.lastEvent?.width;
-        let newHeight = e.lastEvent?.height;
-
-        // Ensure the component stays within the parent boundaries
-        if (left + newWidth > parentBounds?.width) {
-            newWidth = parentBounds?.width - left;
-        }
-
-        if (top + newHeight > parentBounds?.height) {
-            newHeight = parentBounds?.height - top;
-        }
-
-        const { lastEvent } = e;
-        const { drag } = lastEvent;
-        const { beforeTranslate } = drag;
-
-        const absoluteTop = top + beforeTranslate[1];
-        const absoluteLeft = left + beforeTranslate[0];
-
-        updateMoveable(id, {
-            top: absoluteTop,
-            left: absoluteLeft,
-            width: newWidth,
-            height: newHeight,
-            color,
-            image,
-        }, true);
-    };
+    const {ref, buttonLeft, buttonTop, onResize, onResizeEnd} = useBox(props)
 
     return (
         <>
@@ -152,6 +68,7 @@ const Box = (props) => {
                         width,
                         height,
                         color,
+                        image
                     });
                 }}
                 onResize={onResize}
@@ -166,12 +83,25 @@ const Box = (props) => {
             />
 
             {isSelected && (
-                <button
+                <Button
                     onClick={() => deleteMoveable(id)}
-                    style={{ position: "absolute", top: top -10 , left:left  }}
-                >
-                    X
-                </button>
+                    styles={{
+                        position: "absolute",
+                        top: buttonTop,
+                        left: buttonLeft,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "24px",
+                        height: "45px",
+                        borderRadius: "50% !important",
+                        background: "#ff0000",
+                        color: "#ffffff",
+                        border: "none",
+                        cursor: "pointer",
+                    }}
+                    text='X'
+                />
             )}
         </>
     );

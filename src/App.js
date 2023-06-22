@@ -1,22 +1,19 @@
 import React from "react";
 import useMoveable from "./hooks/useMoveable";
 import {Box} from "./components/Box";
+import styles  from './styles/ui/Container/Contianer.module.css';
+
+import {Button} from './components/ui'
 
 const App = () => {
     const { moveableComponents, addMoveable, updateMoveable, deleteMoveable, handleSelected, selected, handleResizeStart } = useMoveable();
 
   return (
-      <main style={{ height: "100vh", width: "100vw" }}>
-        <button onClick={addMoveable}>Add Moveable</button>
+      <main className={styles.container}>
+        <Button onClick={addMoveable} text='Add Moveable +' />
         <div
             id="parent"
-            style={{
-              position: "relative",
-              background: "black",
-              height: "80vh",
-              width: "80vw",
-              overflow: "hidden",
-            }}
+            className={styles.box}
         >
           {moveableComponents.map((item, index) => (
               <Box

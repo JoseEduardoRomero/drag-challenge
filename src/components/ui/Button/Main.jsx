@@ -1,4 +1,5 @@
 import React from "react";
+import buttonStyles from '../../../styles/ui/Button/Button.module.css';
 
 /**
  * @function Button
@@ -10,13 +11,12 @@ import React from "react";
  */
 
 export const Button = (props) => {
-  const { text, styles = {}, onClick } = props;
+  const { text, onClick, styles= {} } = props;
   return (
     <button
-      style={{
-        ...styles,
-      }}
+      className={buttonStyles.button}
       onClick={onClick}
+      style={styles}
     >
       {text}
     </button>
